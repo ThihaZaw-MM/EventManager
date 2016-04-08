@@ -10,6 +10,7 @@ EventManager is an event management system which was created for the purpose of 
 		3.3 JQuery
 		3.4 Backbone.js
 		3.5 Underscore.js
+	4. Mobile applications will come later
 
 
 
