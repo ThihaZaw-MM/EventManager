@@ -1,7 +1,7 @@
 # EventManager
 EventManager is an event management system which was created for the purpose of managing public and private events like exhibition, seminars and workshops.
 # Technical Details
-	The project will use the following technologies to develop.
+	The project will use the following technologies to develop as web application.
 	1. Node.js for server side API
 	2. MongoDB for database
 	3. For client side, there will be
