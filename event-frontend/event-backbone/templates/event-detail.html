@@ -1,0 +1,151 @@
+<div class="row">
+	<div class="col-md-8 col-sm-12 col-xs-12">
+		<div class="panel panel-info event-detail">
+			<div class="panel-heading">
+				<h2>
+					<% if(type == 0) { %>
+						<span class="glyphicon glyphicons-businessman"></span>
+					<% } else if(type == 1) { %>
+						<span class="glyphicon glyphicons-claw-hammer"></span>
+					<% } else if(type == 2) {%>
+						<span class="glyphicon glyphicons-elections"></span>
+					<% } else { %>
+						<span class="glyphicon glyphicon-asterisk"></span>
+					<% } %>
+					<%= eventName %>
+					<span class="pull-right small"><%= _id %></span>
+				</h2>
+			</div>
+			<div class="panel-body">
+				<%= eventDescription %>
+			</div>
+			<div class="panel-footer clearfix">
+				<span class="text-muted"><%= moment(startDate).fromNow() %></span>
+				<div class="btn-group pull-right">
+					<button class="btn btn-default btn-sm" id="close-event">
+						<span class="glyphicon glyphicon-ok text-success"></span>
+						Close
+					</button>
+					<button class="btn btn-default btn-sm" id="edit-event">
+						<span class="glyphicon glyphicon-edit text-info"></span>
+						Edit
+					</button>
+					<button class="btn btn-default btn-sm" id="delete-event">
+						<span class="glyphicon glyphicon-trash text-danger"></span>
+						Remove
+					</button>
+				</div>
+			</div>
+		</div>
+		
+		<hr>
+
+		<% if(typeof comments !== "undefined") { %>
+		<% _.each(comments, function(comment, id) { %>
+
+			<div class="panel panel-default small comment">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon-comment"></span>
+					<b class="text-primary"><%= comment.authorName %></b>
+					<time class="text-muted">
+						<%= moment(comment.submittedAt).fromNow() %>
+					</time>
+
+					<a href="#" title="" class="pull-right text-danger delete-comment" data-index="<%= id %>">
+			        	<span class="glyphicon glyphicon-remove"></span>
+			        </a>
+					<span class="pull-right text-muted"><%= id %></span>
+				</div>
+				<div class="panle-body">
+					<p>
+						<%= comment.comment %>
+					</p>
+				</div>
+			</div>
+		<% }) %>
+		<% } %>
+
+		<div class="comment-form">
+			<div class="form-group">
+				<label>Comment</label>
+				<textarea class="form-control" placeholder="Comment" id="comment"></textarea>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-default" id="post-comment">
+					<span class="glyphicon glyphicon-comment"></span>
+					Add Comment
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-4 col-sm-12 col-xs-12 sidebar">
+		
+		<div class="btn-group btn-breadcrumb">
+	      <a href="#" class="btn btn-danger">
+	        <% if(type == 0) { %>
+	          <span class="glyphicon glyphicon-fire"></span>
+	        <% } else if (type == 1) { %>
+	          <span class="glyphicon glyphicon-heart-empty"></span>
+	        <% } else { %>
+	          <span class="glyphicon glyphicon-asterisk"></span>
+	        <% } %>
+	      </a>
+	      <a href="#" class="btn btn-danger">Type</a>
+	      
+	      <a href="#" class="btn btn-default" data-toggle="dropdown"><%= typeLabel %> <span class="caret"></span></a>
+	      <ul class="dropdown-menu dropdown-menu-right">
+	        <% _.each(app.eventType, function(label, type) { %>
+	          <li><a href="#" class="change-type" data-value="<%= type %>"><%= label %></a></li>
+	        <% }) %>
+	      </ul>
+	    </div>
+
+	    <hr>
+
+	    <div class="btn-group btn-breadcrumb">
+	      <a href="#" class="btn btn-success"><span class="glyphicon glyphicon-user"></span></a>
+	      <a href="#" class="btn btn-success">Assign</a>
+	      <a href="#" class="btn btn-default" data-toggle="dropdown">Test <span class="caret"></span></a>
+	      <ul class="dropdown-menu dropdown-menu-right">
+	        <% _.each(users, function(user, id) { %>
+	          <li><a href="#" class="change-assign" data-value="<%= user._id %>"><%= user.fullName %></a></li>
+	        <% }) %>
+	      </ul>
+	    </div>
+
+	    <div class="btn-group btn-breadcrumb">
+	      <a href="#" class="btn btn-info"><span class="glyphicon glyphicon-arrow-right"></span></a>
+	      <a href="#" class="btn btn-info">Status</a>
+	      <a href="#" class="btn btn-default" data-toggle="dropdown"><%= statusLabel %> <span class="caret"></span></a>
+	      <ul class="dropdown-menu dropdown-menu-right">
+	        <% _.each(app.eventStatus, function(label, status) { %>
+	          <li><a href="#" class="change-status" data-value="<%= status %>"><%= label %></a></li>
+	        <% }) %>
+	      </ul>
+	    </div>
+
+		<hr>
+
+		<div class="alert text-muted meta">
+			<p>
+				Submitted date: <b>
+					<%= moment(submittedAt).format("DD-MM-YYYY h-mm-ss a") %>
+				</b>
+			</p>
+			<p>
+				Last modified: <b>
+					<% if(typeof modifiedAt !== 'undefined') { %>
+						<%= moment(modifiedAt).format("DD-MM-YYYY h-mm-ss a") %>
+					<% } %>
+				</b>
+			</p>
+			<p>
+				Submitted by: <b>
+					<% var submitter = app.userList.get({ _id: submittedBy }) %>
+					<%= submitter.get("fullName") %>
+				</b>
+			</p>
+		</div>
+	</div>
+</div>
