@@ -12,7 +12,8 @@ EventManager is an event management system which was created for the purpose of 
 		3.5 Underscore.js
 	4. Mobile applications will come later
 ## Features
-	Please input and discuss some ideas for the whole system features.
+	1. Event Page
+	2. Visitor Registration
 ## Contribution
 We appreciate any and all efforts to help improve the system. The repository is structured as follows:
   + event-api (Core api codes for Event Management System)
