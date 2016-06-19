@@ -6,6 +6,7 @@ var express = require('express');
 var User = require('../../models/md_users');
 var config = require('../../config/config');
 var jsonwebtoken = require('jsonwebtoken');
+var path = require("path");
 var superSecret = config.secretKey;
 var multer = require('multer');
 
@@ -169,7 +170,7 @@ module.exports = function(app, express){
 
     var storage =   multer.diskStorage({
       destination: function (req, file, callback) {
-        callback(null, __dirname + "/uploads/");
+        callback(null, "../public/file_uploads/profile_photos/");
       },
       filename: function (req, file, callback) {
         callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
@@ -177,48 +178,54 @@ module.exports = function(app, express){
     });
     var upload = multer({ storage : storage}).single('userPhoto');
 
-    api.post('/editProfile/:user_id', function(req, res){
+    api.post('/uploadPhoto/:user_id', function(req, res) {
         var userId = req.params.user_id;
-        req.checkParams("id", "Invalid User ID").isMongoId();
+        console.log(userId);
+        console.log(req.file);
 
-        //req.checkBody("type", "Invalid major").isInt();
-
-        var errors = req.validationErrors();
-        if(errors) {
-            res.status(400).json(errors);
-            return false;
-        }
-
-        upload(req,res,function(err) {
-
+        upload(req, res, function(err) {
             if(err) {
                 console.log(err);
-                return res.end("Error uploading file.");
-            }
+                return res.end("Error uploading file. By Thiha Zaw!!");
+            } 
             User.findById(userId, function(err, user) {
-
                 if (err)
                     res.send(err);
 
-                var photoUrl = "http://" + req.headers.host + "/web_services/users/photo/" + req.file.filename;
-                var todayDate = new Date();
-                user.local.user_active = req.body.user_active;
-                user.local.user_avator = photoUrl;//req.body.user_active; //update here
-                user.local.user_dob = req.body.user_dob;
-                user.local.user_email = req.body.user_email;
-                user.local.user_full_name = req.body.user_full_name;
-                user.local.user_gender = req.body.user_gender;
-                user.local.user_modified_by = req.user.local.user_full_name;
-                user.local.user_modified_date = todayDate.now();
-                user.local.user_role = req.body.user_role;
-
+                var photoUrl = req.file.filename;
+                user.local.user_avator = photoUrl;
                 user.save(function(err) {
                     if (err)
                         res.send(err);
-                    res.json({ success: true, message: 'Data updated!' });
+                    res.json({ success: true, message: 'Photo uploaded!' });
                 });
-
             });
+        });
+    });
+
+    api.post('/editProfile/:user_id', function(req, res){
+        var userId = req.params.user_id;
+        console.log(userId);
+        console.log(req.body);
+
+        User.findById(userId, function(err, user) {
+
+            if (err)
+                res.send(err);
+
+            var todayDate = new Date();
+
+            user.local.user_full_name = req.body.user_full_name;
+            user.local.user_gender = req.body.user_gender;
+            user.local.user_modified_by = req.user.local.user_full_name;
+            user.local.user_modified_date = todayDate;
+
+            user.save(function(err) {
+                if (err)
+                    res.send(err);
+                res.json({ success: true, message: 'Data updated!' });
+            });
+
         });
     });
 

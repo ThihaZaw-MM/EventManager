@@ -157,7 +157,7 @@
                                 <li>
                                     <a>
                                         <span class="image">
-                                            <img src="images/<%=user.local.user_avator %>" alt="Profile Image" />
+                                            <img src="file_uploads/profile_photos/<%=user.local.user_avator%>" alt="Profile Image" />
                                         </span>
                                         <span>
                                             <span>John Smith</span>
@@ -171,7 +171,7 @@
                                 <li>
                                     <a>
                                         <span class="image">
-                                            <img src="images/<%=user.local.user_avator %>" alt="Profile Image" />
+                                            <img src="file_uploads/profile_photos/<%=user.local.user_avator%>" alt="Profile Image" />
                                         </span>
                                         <span>
                                             <span>John Smith</span>
@@ -185,7 +185,7 @@
                                 <li>
                                     <a>
                                         <span class="image">
-                                            <img src="images/<%=user.local.user_avator %>" alt="Profile Image" />
+                                            <img src="file_uploads/profile_photos/<%=user.local.user_avator%>" alt="Profile Image" />
                                         </span>
                                         <span>
                                             <span>John Smith</span>
@@ -199,7 +199,7 @@
                                 <li>
                                     <a>
                                         <span class="image">
-                                            <img src="images/<%=user.local.user_avator %>" alt="Profile Image" />
+                                            <img src="file_uploads/profile_photos/<%=user.local.user_avator%>" alt="Profile Image" />
                                         </span>
                                         <span>
                                             <span>John Smith</span>
@@ -213,7 +213,7 @@
                                 <li>
                                     <a>
                                         <span class="image">
-                                            <img src="images/<%=user.local.user_avator %>" alt="Profile Image" />
+                                            <img src="file_uploads/profile_photos/<%=user.local.user_avator%>" alt="Profile Image" />
                                         </span>
                                         <span>
                                             <span>John Smith</span>
@@ -227,7 +227,7 @@
                                 <li>
                                     <a>
                                         <span class="image">
-                                            <img src="images/<%=user.local.user_avator %>" alt="Profile Image" />
+                                            <img src="file_uploads/profile_photos/<%=user.local.user_avator%>" alt="Profile Image" />
                                         </span>
                                         <span>
                                             <span>John Smith</span>
@@ -253,7 +253,7 @@
             <div class="">
                 <div class="x_panel" ng-controller="userList">
                     <div id="divUserEditForm" style="display:none;">
-                        <form name="userEditForm" enctype="multipart/form-data" action="http://localhost:3030/editProfile/" method="post">
+                        
                             <div class="x_title">
                                 <h2>Edit User Information</h2>
                                 <div class="clearfix">&nbsp;</div>
@@ -261,32 +261,41 @@
                             <div class="x_content">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label for="user_full_name">Full Name * :</label>
-                                        <input class="form-control" name="user_full_name" id="user_full_name" required="" type="text" ng-model="userInfo.local.user_full_name">
-                                        <label for="user_email">Email * :</label>
-                                        <input class="form-control" name="user_email" id="user_email" readonly="true" type="email" ng-model="userInfo.local.user_email">
-                                        <label for="user_gender">Gender * :</label>
-                                        <p>
-                                            Male:
-                                            <input type="radio"  name="user_gender" value="M" ng-model="userInfo.local.user_gender"> &nbsp;&nbsp;Female:
-                                            <input type="radio"  name="user_gender" value="F" ng-model="userInfo.local.user_gender">
-                                        </p>
+                                        <form name="userEditForm" enctype="multipart/form-data" action="http://localhost:3030/web_services/users/editProfile/<%= user._id %>" method="post">
+                                            <label for="user_full_name">Full Name * :</label>
+                                            <input class="form-control" name="user_full_name" id="user_full_name" required="" type="text" ng-model="userInfo.local.user_full_name">
+                                            <label for="user_email">Email * :</label>
+                                            <input class="form-control" name="user_email" id="user_email" readonly="true" type="email" ng-model="userInfo.local.user_email">
+                                            <label for="user_gender">Gender * :</label>
+                                            <p>
+                                                Male:
+                                                <input type="radio"  name="user_gender" value="M" ng-model="userInfo.local.user_gender"> &nbsp;&nbsp;Female:
+                                                <input type="radio"  name="user_gender" value="F" ng-model="userInfo.local.user_gender">
+                                            </p>
+                                            <div class="col-md-9 col-sm-9 col-xs-12 ">
+                                                <button type="submit" class="btn btn-primary" onclick="SwitchUI(1)">Cancel</button>
+                                                <button type="submit" id="updateUser" class="btn btn-success">Submit</button>
+                                            </div>    
+                                        </form>
+                                        
                                     </div>
                                     <div class="col-sm-6">
-                                        <div id="gallery">
-                                        </div>
-                                        <label for="user_avator">Profile Picture</label>
-                                        <input type="file" id="fileInput" ng-model="MyFile" media-preview>
+                                        <form id="uploadForm" enctype="multipart/form-data" action="http://localhost:3030/web_services/users/uploadPhoto/<%= user._id %>" method="post">
+                                            <div id="gallery">
+                                                <div class="thumbnail">
+                                                    <img height="150" src="file_uploads/profile_photos/<%=user.local.user_avator%>" id="profilePhoto"/>
+                                                </div>
+                                            </div>
+                                            <label class="btn btn-primary">
+                                                Browse&hellip; <input id="fileInput" name="userPhoto" type="file" accept="image/*" style="display: none;"/>
+                                            </label>      
+                                            <input type="submit" value="Upload Image" class="btn btn-primary" id="uploadSubmit" name="submit">
+                                            <span id="status" class="label label-success"></span>
+                                            <img src="/./images/loader.gif" width="30" height="30" id="loading">
+                                        </form>
                                     </div>
                                 </div>
-                                
-                                
                             </div>
-                            <div class="col-md-9 col-sm-9 col-xs-12 ">
-                                <button type="submit" class="btn btn-primary" onclick="SwitchUI(1)">Cancel</button>
-                                <button type="submit" class="btn btn-success">Submit</button>
-                            </div>
-                        </form>
                     </div>
                     <div id="divUserGrid">
                         <div class="input-group">
@@ -339,6 +348,7 @@
     </div>
 </div>
 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 <!-- bootstrap-daterangepicker -->
 <!-- jQuery -->
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -490,6 +500,29 @@
             allowClear: true
         });
     });
+
+    $(document).ready(function() {
+        $("#userEdit").submit(function() {
+            
+            $(this).ajaxSubmit({
+
+                error: function(xhr) {
+                    status('Error: ' + xhr.status);
+                },
+                success: function(response) {
+                    //location.reload();
+                    //return false;
+                    console.log("Upload successful!")
+                    $("#status").text("Upload success!");
+                    $("#loading").hide("fast");
+                    
+                }
+            });
+            window.location.replace("http://localhost:3030/userlist");
+            //Very important line, it disable the page refresh.
+            return false;
+        });
+    });
 </script>
 <!-- /Select2 -->
 
@@ -566,6 +599,30 @@
         autosize($('.resizable_textarea'));
     });
 
+    $(document).ready(function() {
+        $("#uploadForm").submit(function() {
+            
+            $("#loading").css("display","block");
+
+            $(this).ajaxSubmit({
+
+                error: function(xhr) {
+                    status('Error: ' + xhr.status);
+                },
+                success: function(response) {
+                    $("#status").text("Upload success!");
+                    console.log(response.photoUrl);
+                    $("#loading").hide("fast");
+                }
+            });
+            //Very important line, it disable the page refresh.
+            return false;
+        });
+
+        $('#loading').css("display","none");
+        $("#uploadSubmit").hide("fast");
+    });
+
     var uploadFile = document.querySelector("#fileInput");
     uploadFile.addEventListener("change", function() {
         var files = this.files;
@@ -573,10 +630,10 @@
         $("#uploadSubmit").show("fast");
     }, false);
     function previewImage(files) {
-        var galleryId = "gallery";
-        //var profilePhoto = "profilePhoto";
-        //var img  = document.getElementById(profilePhoto);
-        var gallery = document.getElementById(galleryId);
+        //var galleryId = "gallery";
+        var profilePhoto = "profilePhoto";
+        var img  = document.getElementById(profilePhoto);
+        //var gallery = document.getElementById(galleryId);
         var imageType = /image.*/;
         var file = files[0];
 
@@ -584,13 +641,13 @@
             throw "File Type must be an image";
         }
 
-        var thumb = document.createElement("div");
-        thumb.classList.add("thumbnail");
+        //var thumb = document.createElement("div");
+        //thumb.classList.add("thumbnail");
 
-        var img = document.createElement("img");
+        //var img = document.createElement("img");
         img.file = file;
-        thumb.appendChild(img);
-        gallery.appendChild(thumb);
+        //thumb.appendChild(img);
+        //gallery.appendChild(thumb);
 
         var reader = new FileReader();
         reader.onload = (function(aImg) {
